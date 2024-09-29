@@ -18,12 +18,28 @@ struct Ray {
     vec3 dir;
 };
 
+struct RayTracingMaterial
+{
+    vec4 color;
+};
+
 struct HitInfo {
     bool didHit;
     float dst;
     vec3 hitPoint;
     vec3 normal;
+    RayTracingMaterial material;
 };
+
+struct Sphere
+{
+    vec3 pos;
+    float radius;
+    RayTracingMaterial material;
+};
+
+uniform Sphere spheres[10];
+uniform int NumSpheres;
 
 HitInfo RaySphere(Ray ray, vec3 sphereCenter, float sphereRadius)
 {
@@ -52,17 +68,46 @@ HitInfo RaySphere(Ray ray, vec3 sphereCenter, float sphereRadius)
             hitInfo.normal = normalize(hitInfo.hitPoint - sphereCenter);
         }
     }
+
     return hitInfo;
+}
+
+HitInfo CalculateRayCollision(Ray ray)
+{
+    HitInfo closestHit;
+
+    closestHit.didHit = false;
+    closestHit.dst = 0.0;
+    closestHit.hitPoint = vec3(0.0);
+    closestHit.normal = vec3(0.0);
+    
+    closestHit.dst = 1e20;
+
+    for (int i = 0; i < NumSpheres; i++)
+    {
+        Sphere sphere = spheres[i];
+        HitInfo hitInfo = RaySphere(ray, sphere.pos, sphere.radius);
+
+        if (hitInfo.didHit && hitInfo.dst < closestHit.dst)
+        {
+            closestHit = hitInfo;
+            closestHit.material = sphere.material;
+        }
+    }
+
+    return closestHit;
 }
 
 void main() {
     vec2 uv = (2.0 * gl_FragCoord.xy - resolution) / resolution.y;
+    vec3 viewPoint = vec3(uv, 1.0);
 
     Ray ray;
     ray.origin = vec3(0.0, 0.0, 0.0);
-    ray.dir = normalize(vec3(uv, 1.0) - ray.origin);
+    ray.dir = normalize(viewPoint - ray.origin);
 
-    HitInfo hitInfo = RaySphere(ray, vec3(0.0, 0.0, 5.0), 1.0);
+    // HitInfo hitInfo = RaySphere(ray, vec3(0.0, 0.0, 5.0), 1.0);
+    HitInfo hitInfo = CalculateRayCollision(ray);
 
     if (hitInfo.didHit) {
         outColor = vec4(1.0, 1.0, 1.0, 1.0);
