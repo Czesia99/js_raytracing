@@ -6,6 +6,7 @@ export class Rectangle {
         this.vertexShaderSource = vertexShaderSource
         this.fragmentShaderSource = fragmentShaderSource
         this.shader = new Shader(this.vertexShaderSource, this.fragmentShaderSource);
+
         let positionAttributeLocation = gl.getAttribLocation(this.shader.program, "a_position");
 
         this.vao = gl.createVertexArray();

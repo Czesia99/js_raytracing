@@ -16,6 +16,8 @@ function main() {
 
 function update() {
     gl.clear(gl.COLOR_BUFFER_BIT)
+    gl.useProgram(quad.shader.program)
+    gl.uniform2f(gl.getUniformLocation(quad.shader.program, "resolution"), canvas.width, canvas.height)  
     quad.render()
     requestAnimationFrame(() => update(gl))
 }
