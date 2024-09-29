@@ -9,8 +9,9 @@ let quad = new Rectangle(vertexShaderSource, fragmentShaderSource)
 
 //max 10, modify in shader if needed
 const spheresData = [
-    { pos: [0.5, 0.5, 1.0], radius: 0.2, material: { color: [1.0, 1.0, 1.0, 1.0] }},
-    { pos: [-0.5, -0.5, 1.5], radius: 0.2, material: { color: [1.0, 1.0, 1.0, 1.0] }},
+    { pos: [0.5, 0.5, 1.0], radius: 0.2, material: { color: [1.0, 0.0, 0.0, 1.0] }},
+    { pos: [-0.5, -0.5, 1.5], radius: 0.2, material: { color: [0.0, 1.0, 0.0, 1.0] }},
+    { pos: [0.5, -0.5, 1.0], radius: 0.1, material: { color: [0.0, 0.0, 1.0, 1.0] }},
 ];
 
 function main() {

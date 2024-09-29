@@ -41,6 +41,14 @@ struct Sphere
 uniform Sphere spheres[10];
 uniform int NumSpheres;
 
+float RandomValue(inout uint state)
+{
+    state = state * 747796405u + 2891336453u;
+    uint result = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+    result = (result >> 22) ^ result;
+    return float(result) / 4294967295.0;
+}
+
 HitInfo RaySphere(Ray ray, vec3 sphereCenter, float sphereRadius)
 {
     HitInfo hitInfo;
@@ -110,7 +118,7 @@ void main() {
     HitInfo hitInfo = CalculateRayCollision(ray);
 
     if (hitInfo.didHit) {
-        outColor = vec4(1.0, 1.0, 1.0, 1.0);
+        outColor = hitInfo.material.color;
     } else {
         outColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
