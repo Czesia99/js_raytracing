@@ -9,10 +9,10 @@ let quad = new Rectangle(vertexShaderSource, fragmentShaderSource)
 
 //max 10, modify in shader if needed
 const spheresData = [
-    { pos: [0.9, 1.0, 2.0], radius: 1.0, material: { color: [1.0, 0.0, 0.0, 1.0], emissionColor : [1.0, 1.0, 1.0, 1.0], emissionStrength : 2.0}},
+    { pos: [0.9, 1.0, 2.0], radius: 1.0, material: { color: [1.0, 0.0, 0.0, 1.0], emissionColor : [1.0, 1.0, 1.0, 1.0], emissionStrength : 3.0}},
     { pos: [-0.5, -0.3, 1.0], radius: 0.2, material: { color: [0.0, 1.0, 0.0, 1.0], emissionColor : [0.0, 0.0, 0.0, 0.0], emissionStrength : 0.0 }},
-    { pos: [0.5, -0.3, 1.0], radius: 0.1, material: { color: [0.0, 0.0, 1.0, 1.0], emissionColor : [0.0, 0.0, 0.0, 0.0], emissionStrength : 0.0}},
-    { pos: [0.0, -2.5, 1.5], radius: 2.0, material: { color: [0.0, 0.0, 1.0, 1.0], emissionColor : [0.0, 0.0, 0.0, 0.0], emissionStrength : 0.0}},
+    { pos: [0.5, -0.3, 1.0], radius: 0.1, material: { color: [0.0, 0.0, 1.0, 1.0], emissionColor : [0.0, 0.0, 1.0, 0.0], emissionStrength : 0.0}},
+    { pos: [0.0, -2.5, 1.5], radius: 2.0, material: { color: [0.9, 0.3, 0.5, 1.0], emissionColor : [0.0, 0.0, 0.0, 0.0], emissionStrength : 0.0}},
 ];
 
 function main() {
@@ -23,6 +23,7 @@ function main() {
 
 function update() {
     let maxBounceCount = 10;
+    let numRays = 100;
     gl.clear(gl.COLOR_BUFFER_BIT)
 
     gl.useProgram(quad.shader.program)
@@ -32,6 +33,9 @@ function update() {
 
     let maxBounceLocation = gl.getUniformLocation(quad.shader.program, "MaxBounceCount")
     gl.uniform1i(maxBounceLocation, maxBounceCount)
+
+    let numRaysLocation = gl.getUniformLocation(quad.shader.program, "NumRaysPerPixel")
+    gl.uniform1i(numRaysLocation, numRays)
 
     setSpheres(quad.shader.program, spheresData)
     

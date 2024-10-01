@@ -43,6 +43,7 @@ struct Sphere
 uniform Sphere spheres[10];
 uniform int NumSpheres;
 uniform int MaxBounceCount;
+uniform int NumRaysPerPixel;
 
 float RandomValue(inout uint state)
 {
@@ -167,7 +168,15 @@ void main() {
     ray.origin = vec3(0.0, 0.0, 0.0);
     ray.dir = normalize(viewPoint - ray.origin);
 
-    vec3 pixelCol = Trace(ray, rngState);
+    vec3 totalIncomingLight = vec3(0.0, 0.0, 0.0);
+
+    for (int rayIndex = 0; rayIndex < NumRaysPerPixel; rayIndex++)
+    {
+        totalIncomingLight += Trace(ray, rngState);
+    }
+
+    vec3 pixelCol = totalIncomingLight / float(NumRaysPerPixel);
+
     outColor = vec4(pixelCol, 1);
 }
 `;
