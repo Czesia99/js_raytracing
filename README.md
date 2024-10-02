@@ -1,2 +1,6 @@
 # js_raytracing
-Raytracing demo WEBGL
+Raytracer with WEBGL
+
+<p align="center">
+    <img src = "showcase/screen01.png">
+</p>

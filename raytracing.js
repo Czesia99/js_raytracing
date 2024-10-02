@@ -6,13 +6,15 @@ export const gl = canvas.getContext("webgl2")
 
 
 let quad = new Rectangle(vertexShaderSource, fragmentShaderSource)
-
+let resizefinished = null;
 //max 10, modify in shader if needed
 const spheresData = [
-    { pos: [0.9, 1.0, 2.0], radius: 1.0, material: { color: [1.0, 0.0, 0.0, 1.0], emissionColor : [1.0, 1.0, 1.0, 1.0], emissionStrength : 3.0}},
-    { pos: [-0.5, -0.3, 1.0], radius: 0.2, material: { color: [0.0, 1.0, 0.0, 1.0], emissionColor : [0.0, 0.0, 0.0, 0.0], emissionStrength : 0.0 }},
-    { pos: [0.5, -0.3, 1.0], radius: 0.1, material: { color: [0.0, 0.0, 1.0, 1.0], emissionColor : [0.0, 0.0, 1.0, 0.0], emissionStrength : 0.0}},
-    { pos: [0.0, -2.5, 1.5], radius: 2.0, material: { color: [0.9, 0.3, 0.5, 1.0], emissionColor : [0.0, 0.0, 0.0, 0.0], emissionStrength : 0.0}},
+    { pos: [5.0, 6.0, 4.0], radius: 4.0, material: { color: [1.0, 0.0, 0.0, 1.0], emissionColor : [1.0, 1.0, 1.0, 1.0], emissionStrength : 2.0}},
+    { pos: [0.0, 0.0, 5.0], radius: 1.0, material: { color: [0.0, 1.0, 0.0, 1.0], emissionColor : [0.0, 0.0, 0.0, 0.0], emissionStrength : 0.0 }},
+    { pos: [1.0, -1.0, 2.0], radius: 0.5, material: { color: [0.3, 0.5, 1.0, 1.0], emissionColor : [0.0, 0.0, 1.0, 0.0], emissionStrength : 0.0}},
+    { pos: [-1.0, -1.2, 2.0], radius: 0.2, material: { color: [0.44, 0.2, 1.0, 1.0], emissionColor : [0.44, 0.2, 1.0, 1.0], emissionStrength : 2.0}},
+    { pos: [-1.6, -1.0, 2.0], radius: 0.4, material: { color: [0.44, 0.2, 1.0, 1.0], emissionColor : [0.0, 0.0, 1.0, 0.0], emissionStrength : 0.0}},
+    { pos: [0.0, -21.0, 5.0], radius: 20.0, material: { color: [0.9, 0.7, 0.7, 1.0], emissionColor : [0.0, 0.0, 0.0, 0.0], emissionStrength : 0.0}},
 ];
 
 function main() {
@@ -22,8 +24,8 @@ function main() {
 }
 
 function update() {
-    let maxBounceCount = 10;
-    let numRays = 100;
+    let maxBounceCount = 30;
+    let numRays = 10000;
     gl.clear(gl.COLOR_BUFFER_BIT)
 
     gl.useProgram(quad.shader.program)
@@ -40,15 +42,20 @@ function update() {
     setSpheres(quad.shader.program, spheresData)
     
     quad.render()
-    requestAnimationFrame(() => update(gl))
+    console.log("render")
 }
 
-addEventListener("resize", resize);
+addEventListener("resize", () => {
+    if (resizefinished !== null)
+        clearTimeout(resizefinished)
+    resizefinished = setTimeout(resize, 100)
+});
 
 function resize() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     gl.viewport(0, 0, canvas.width, canvas.height)
+    requestAnimationFrame(() => update(gl))
 }
 
 function setSpheres(program, spheres)
