@@ -9,11 +9,11 @@ let quad = new Rectangle(vertexShaderSource, fragmentShaderSource)
 let resizefinished = null;
 //max 10, modify in shader if needed
 const spheresData = [
-    { pos: [5.0, 6.0, 4.0], radius: 4.0, material: { color: [1.0, 0.0, 0.0, 1.0], emissionColor : [1.0, 1.0, 1.0, 1.0], emissionStrength : 2.0}},
+    // { pos: [5.0, 6.0, 4.0], radius: 4.0, material: { color: [1.0, 0.0, 0.0, 1.0], emissionColor : [1.0, 1.0, 1.0, 1.0], emissionStrength : 2.0}},
     { pos: [0.0, 0.0, 5.0], radius: 1.0, material: { color: [0.0, 1.0, 0.0, 1.0], emissionColor : [0.0, 0.0, 0.0, 0.0], emissionStrength : 0.0 }},
-    { pos: [1.0, -1.0, 2.0], radius: 0.5, material: { color: [0.3, 0.5, 1.0, 1.0], emissionColor : [0.0, 0.0, 1.0, 0.0], emissionStrength : 0.0}},
+    { pos: [1.0, -1.0, 2.0], radius: 0.5, material: { color: [0.44, 0.7, 1.0, 1.0], emissionColor : [0.0, 0.0, 1.0, 0.0], emissionStrength : 0.0}},
     { pos: [-1.0, -1.2, 2.0], radius: 0.2, material: { color: [0.44, 0.2, 1.0, 1.0], emissionColor : [0.44, 0.2, 1.0, 1.0], emissionStrength : 2.0}},
-    { pos: [-1.6, -1.0, 2.0], radius: 0.4, material: { color: [0.44, 0.2, 1.0, 1.0], emissionColor : [0.0, 0.0, 1.0, 0.0], emissionStrength : 0.0}},
+    { pos: [-1.6, -1.0, 2.0], radius: 0.4, material: { color: [1.0, 1.0, 1.0, 1.0], emissionColor : [0.0, 0.0, 1.0, 0.0], emissionStrength : 0.0}},
     { pos: [0.0, -21.0, 5.0], radius: 20.0, material: { color: [0.9, 0.7, 0.7, 1.0], emissionColor : [0.0, 0.0, 0.0, 0.0], emissionStrength : 0.0}},
 ];
 

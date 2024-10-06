@@ -13,6 +13,15 @@ out vec4 outColor;
 
 uniform vec2 resolution;
 
+// const vec3 SkyColorZenith = vec3(0.0788, 0.364, 0.7264);
+const vec3 SkyColorZenith = vec3(0.0, 1.0, 0.7264);
+// const vec3 SkyColorHorizon = vec3(1.0, 1.0, 1.0);
+const vec3 SkyColorHorizon = vec3(1.0, 0.8, 0.2);
+const vec3 GroundColor = vec3(0.35, 0.3, 0.35);
+const vec3 SunLightDirection = normalize(vec3(-1.0, -0.6, -1.0));
+const float SunFocus = 50.0;
+const float SunIntensity = 20.0;
+
 struct Ray {
     vec3 origin;
     vec3 dir;
@@ -131,6 +140,18 @@ HitInfo CalculateRayCollision(Ray ray)
     return closestHit;
 }
 
+vec3 GetEnvironmentLight(Ray ray)
+{
+    // float skyGradientT = pow(smoothstep(0.0, 0.4, ray.dir.y), 0.35);
+    float skyGradientT = pow(smoothstep(0.0, 0.4, ray.dir.y), 0.7);
+    vec3 skyGradient = mix(SkyColorHorizon, SkyColorZenith, skyGradientT);
+    float sun = pow(max(0.0, dot(ray.dir, -SunLightDirection)), SunFocus) * SunIntensity;
+
+    float groundToSkyT = smoothstep(-0.01, 0.0, ray.dir.y);
+    float sunMask = float(groundToSkyT >= 1.0);
+    return mix(GroundColor, skyGradient, groundToSkyT) + sun * sunMask;
+}
+
 vec3 Trace(Ray ray, inout uint rngState)
 {
     vec4 incomingLight = vec4(0.0, 0.0, 0.0, 0.0);
@@ -147,7 +168,11 @@ vec3 Trace(Ray ray, inout uint rngState)
             vec3 emittedLight = material.emissionColor.rgb * material.emissionStrength;
             incomingLight += vec4(emittedLight, 0.0) * rayColor;
             rayColor *= material.color;
-        } else { break; }
+        } else 
+        {
+            incomingLight += vec4(GetEnvironmentLight(ray), 1.0) * rayColor;
+            break; 
+        }
     }
     return incomingLight.rgb;
 }
